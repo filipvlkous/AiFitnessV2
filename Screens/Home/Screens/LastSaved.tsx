@@ -28,7 +28,7 @@ const LastSaved: React.FC<{
         <TouchableOpacity
           onPress={() => navigation.navigate("Ai")}
           style={{
-            backgroundColor: "#76a6b1",
+            backgroundColor: "#47646A",
             display: "flex",
             flexDirection: "row",
             borderRadius: 20,

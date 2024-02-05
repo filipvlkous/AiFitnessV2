@@ -32,12 +32,6 @@ const TextColot = {
   color: "#FFFF",
 };
 
-type SingleType = {
-  click: boolean;
-  generateOneMeal: (meal: string) => Promise<void>;
-  restart: () => void;
-};
-
 export default function SingleRecepie({
   click,
   generateOneMeal,

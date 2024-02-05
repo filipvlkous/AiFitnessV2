@@ -3,14 +3,12 @@ import GoPremium from "./GoPremium";
 import LastSaved from "./LastSaved";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store/testStore";
-import Pantry from "./Pantry";
 import SafeAreView from "../../../components/SafeAreView";
 import Fitness from "./Fitness";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackType, TabMainNavigator } from "../../../types/navigatorTypes";
 import { RouteProp } from "@react-navigation/native";
-import LottieView from "lottie-react-native";
-import { useEffect, useRef } from "react";
+
 type ScreenANavigationProp = StackNavigationProp<TabMainNavigator, "Home">;
 type ScreenARouteProp = RouteProp<HomeStackType, "Index">;
 const HomeIndex: React.FC<{
@@ -44,7 +42,7 @@ const HomeIndex: React.FC<{
           {count.data.subscription ? <GoPremium /> : null}
           <LastSaved route={route} navigation={navigation} />
           <Fitness />
-          <Pantry />
+          {/* <Pantry /> */}
         </View>
       </SafeAreView>
     </ScrollView>

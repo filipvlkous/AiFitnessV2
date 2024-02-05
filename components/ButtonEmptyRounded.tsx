@@ -13,6 +13,7 @@ interface ButtonProps extends TouchableOpacityProps {
   title: string;
   img?: boolean;
   textStyle?: StyleProp<TextStyle>;
+  style: any;
 }
 
 const ButtonEmptyRounded: React.FC<ButtonProps> = ({
