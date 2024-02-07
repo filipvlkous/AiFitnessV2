@@ -207,7 +207,7 @@ export default function ProfileDetails({
           <View style={{ width: "100%", gap: 10, paddingTop: 10 }}>
             <TextInput
               style={styles.InputStyle}
-              placeholder="Zadejte jídlo a stiskněte čárku"
+              placeholder="Napiš jídlo anglicky a zmáčkni čárku"
               onChangeText={handleTextChange}
               value={text}
             />

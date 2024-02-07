@@ -15,13 +15,9 @@ import Init from "./messages/Init";
 import SingleRecepie from "./messages/Single/InitSingle";
 import BotOneMeal from "./messages/Single/RespSingle";
 import SafeAreView from "../../components/SafeAreView";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store/testStore";
+import Reset from "./messages/reset";
 
 export default function AIScreenIndex() {
-  const user = useSelector(
-    (state: RootState) => state.counterReducer.currentUser?.data
-  );
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState({ key: "", value: "" });
@@ -66,21 +62,20 @@ export default function AIScreenIndex() {
     setModal(!modal);
   };
 
-  const fetchPaymentSheetParams = async (index: number) => {
-    const init = setLoading(true);
+  const callFetchRecepiesForDay = async (index: number) => {
+    setLoading(true);
     try {
-      await fetchRecepiesForDay()
-        .then((data) => {
-          if (data != undefined) {
-            const updatedTest = [...test]; // Create a copy of the original array
-            updatedTest[index].click = true;
-            setTest([...updatedTest, { user: "BOTRECEPIES", recepies: data }]);
-          }
-        })
-        .then(() => {
-          setLoading(false);
-        });
-    } catch (error) {}
+      const data = await fetchRecepiesForDay();
+      if (data != undefined) {
+        const updatedTest = [...test]; // Create a copy of the original array
+        updatedTest[index].click = true;
+        setTest([...updatedTest, { user: "BOTRECEPIES", recepies: data }]);
+      }
+    } catch (error) {
+      throw Alert.alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const generateRecepie = async (
@@ -90,20 +85,25 @@ export default function AIScreenIndex() {
   ) => {
     setLoading(true);
 
-    const respond = await fetchOneRecepie(recepie, keyText, options);
-    if (respond != undefined) {
-      setTest([
-        ...test,
-        {
-          key: keyText,
-          option: options,
-          user: "USER",
-          msg: "I wanna have recepie for:",
-        },
-        { text: respond, option: keyText, user: "BOT" },
-      ]);
+    try {
+      const respond = await fetchOneRecepie(recepie, keyText, options);
+      if (respond != undefined) {
+        setTest([
+          ...test,
+          {
+            key: keyText,
+            option: options,
+            user: "USER",
+            msg: "I wanna have recepie for:",
+          },
+          { text: respond, option: keyText, user: "BOT" },
+        ]);
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const generateOneMeal = async (meal: string, index: number) => {
@@ -113,7 +113,8 @@ export default function AIScreenIndex() {
       const respond = await getOneMeal(meal);
       if (respond != undefined) {
         handleChangeUser(index);
-
+        console.log(respond);
+        // const label = respond.replace(/\\n/g, '\\n');
         setTest([
           ...test,
           {
@@ -125,6 +126,10 @@ export default function AIScreenIndex() {
             option: meal,
             user: "BOTONEMEAL",
             text: respond,
+          },
+          {
+            user: "RESETCHAT",
+            click: false,
           },
         ]);
       }
@@ -235,13 +240,29 @@ export default function AIScreenIndex() {
                     restart={() => restart()}
                     click={value.click}
                     key={index}
-                    fetchRecipe={() => fetchPaymentSheetParams(index)}
+                    fetchRecipe={() => callFetchRecepiesForDay(index)}
                     loading={loading}
                   />
                 );
 
               case "BOT":
                 return <BotMessage key={index} value={value} />;
+
+              case "RESETCHAT":
+                return (
+                  <Reset
+                    click={value.click}
+                    key={index}
+                    dayRecepies={() => {
+                      handleChangeUser(index);
+                      addToMap("INITBOT", "Porsím o jídelní plán na den. ");
+                    }}
+                    singleRecepies={() => {
+                      handleChangeUser(index);
+                      addToMap("SINGLEINIT", "Prosím o jeden recept.");
+                    }}
+                  />
+                );
 
               default:
                 return null;

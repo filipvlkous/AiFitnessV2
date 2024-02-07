@@ -3,14 +3,14 @@ import LottieView from "lottie-react-native";
 import loadingAnim from "../assets/animations/loading.json";
 import { useEffect, useRef } from "react";
 
-const ButtonLoading: React.FC<TouchableOpacityProps> = () => {
+const ButtonLoading: React.FC<TouchableOpacityProps> = ({ style }) => {
   const animationRef = useRef<LottieView>(null);
   useEffect(() => {
     animationRef.current?.play();
   }, []);
 
   return (
-    <View style={[styles.button, styles.buttonPressed, { height: 52 }]}>
+    <View style={[styles.button, styles.buttonPressed, { height: 52 }, style]}>
       <LottieView
         ref={animationRef}
         source={loadingAnim}

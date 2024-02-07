@@ -1,4 +1,11 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import GoPremium from "./GoPremium";
 import LastSaved from "./LastSaved";
 import { useSelector } from "react-redux";
@@ -34,15 +41,20 @@ const HomeIndex: React.FC<{
         <View style={styles.Container}>
           <View style={styles.WellcomeContainer}>
             <Text style={styles.TextStyle}>Uživatel {count.data.name}</Text>
-            <Image
-              style={{ height: 40, width: 40 }}
-              source={require("../../../assets/Male.png")}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Profile", { screen: "Details" })
+              }
+            >
+              <Image
+                style={{ height: 40, width: 40 }}
+                source={require("../../../assets/Male.png")}
+              />
+            </TouchableOpacity>
           </View>
           {count.data.subscription ? <GoPremium /> : null}
           <LastSaved route={route} navigation={navigation} />
           <Fitness />
-          {/* <Pantry /> */}
         </View>
       </SafeAreView>
     </ScrollView>

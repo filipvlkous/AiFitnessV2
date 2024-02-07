@@ -30,7 +30,7 @@ export default function AnimationWithImperativeApi({
           position: "absolute",
           width: widthDim,
         },
-        height,
+        { height: "100%" },
       ]}
     >
       <View
@@ -42,10 +42,16 @@ export default function AnimationWithImperativeApi({
       />
       <Lottie
         //   ref={animationRef}
-        style={{ position: "absolute", alignSelf: "center" }}
+        style={{
+          bottom: 200,
+          position: "absolute",
+          alignSelf: "center",
+          height: 400,
+          width: 400,
+        }}
         loop={true}
         autoPlay={true}
-        progress={animationProgress.current}
+        // progress={animationProgress.current}
         source={require("../../assets/animations/loadingAnimation.json")}
       />
     </View>

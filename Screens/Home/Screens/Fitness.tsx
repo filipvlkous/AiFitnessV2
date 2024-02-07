@@ -1,9 +1,10 @@
-import { View, Button, Alert, Text } from "react-native";
+import { View, Alert, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { getFitness } from "../../../Server/recepies";
 import firebase from "../../../initFirebase";
 import ExerciseList from "../../../components/FItness";
-
+import Button from "../../../components/ButtonDark";
+import ButtonEmptyRounded from "../../../components/ButtonEmptyRounded";
 type FitnessData = {
   gif: string;
   name: string;
@@ -72,8 +73,12 @@ export default function Fitness() {
       >
         Fitness plan
       </Text>
-      {!showButton ? (
-        <Button onPress={() => getData()} title="Get Plan" />
+      {showButton ? (
+        <ButtonEmptyRounded
+          onPress={() => getData()}
+          title="Vygeneruj nový plán"
+          style={{ borderRadius: 10 }}
+        />
       ) : null}
       <View>
         {data != undefined

@@ -19,6 +19,7 @@ const DayFitness: React.FC<{
           paddingHorizontal: 10,
           paddingVertical: 10,
           alignItems: "center",
+          justifyContent: "center",
           gap: 10,
         }}
       >
@@ -43,9 +44,16 @@ const DayFitness: React.FC<{
           </Text>
         </View>
         {index < exercises - 1 ? (
-          <Text style={{ position: "absolute", bottom: 0, color: "#fff" }}>
-            ----------------------------------------------
-          </Text>
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              borderColor: "#fff",
+              borderWidth: 1,
+              width: "100%",
+              borderRadius: 10,
+            }}
+          ></View>
         ) : null}
       </View>
       {clicked ? (

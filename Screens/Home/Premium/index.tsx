@@ -87,9 +87,9 @@ export default function PremiumIndex() {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={style.smallHeadText}>Try Premium functions</Text>
+        <Text style={style.smallHeadText}>Vyzkoušejte premium funkce</Text>
         <Text style={style.bigHeadText}>
-          Say yes to more personalised recipes.
+          Řekněte ano více individuálním receptům.
         </Text>
         <Image
           style={{ alignSelf: "center", marginVertical: 35 }}
@@ -98,18 +98,23 @@ export default function PremiumIndex() {
         <View style={style.bodyTextContainer}>
           <Text style={[style.bodyText, { paddingRight: 10 }]}>•</Text>
           <Text style={style.bodyText}>
-            Gain access generating recipes from your{"\n"} Pantry inventory
+            Získejte přístup ke generování receptů ze svého{"\n"} zásoby ve
+            spíži
           </Text>
         </View>
         <View style={style.bodyTextContainer}>
           <Text style={[style.bodyText, { paddingRight: 10 }]}>•</Text>
-          <Text style={style.bodyText}>Save resipes for the future</Text>
+          <Text style={style.bodyText}>Uložte si oblíbené recepty</Text>
+        </View>
+        <View style={style.bodyTextContainer}>
+          <Text style={[style.bodyText, { paddingRight: 10 }]}>•</Text>
+          <Text style={style.bodyText}>
+            Nech si udělat fitness plán na míru
+          </Text>
         </View>
         <View style={[style.bodyTextContainer, { paddingBottom: 25 }]}>
           <Text style={[style.bodyText, { paddingRight: 10 }]}>•</Text>
-          <Text style={style.bodyText}>
-            Generate recipes as many times you want
-          </Text>
+          <Text style={style.bodyText}>Vygeneruj kolik chceš receptů</Text>
         </View>
 
         <ButtonPremium

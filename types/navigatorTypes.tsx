@@ -21,7 +21,7 @@ export type TabMainNavigator = {
           };
         };
       };
-  Profile: undefined;
+  Profile: { screen: "Details" };
 };
 
 export type LoginRegisterTypeStack = {

@@ -15,7 +15,7 @@ const BotMsg = ({ message }: { message: TypeBotMsg }) => {
     <TypeWriter typing={1} maxDelay={15}>
       <View>
         <Text style={{ fontFamily: "Inter-Regular", fontSize: 15 }}>
-          {message.text}
+          {`${message.text}`}
         </Text>
       </View>
     </TypeWriter>

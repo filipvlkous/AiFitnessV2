@@ -101,66 +101,36 @@ export default function BotOneMeal({ value }: { value: any }) {
               display: "flex",
               flexDirection: "row",
               width: "100%",
-              justifyContent: "space-between",
               borderTopWidth: 2,
               borderColor: "#BEBEBE",
               marginTop: 10,
+              justifyContent: "center",
             }}
           >
             <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               disabled={loading}
               onPress={save ? onDeleteRecepie : onSeveRecepie}
             >
-              <View
+              <Text style={{ fontSize: 15, color: "#47646A" }}>
+                Uložit recept
+              </Text>
+              <Lottie
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
+                  height: 35,
+                  width: 35,
+                  zIndex: 10,
                 }}
-              >
-                <Text style={{ fontSize: 13, color: "#47646A" }}>
-                  Uložit recept
-                </Text>
-                <Lottie
-                  style={{
-                    height: 35,
-                    width: 35,
-                    zIndex: 10,
-                  }}
-                  ref={ref}
-                  loop={false}
-                  source={require("../../../../assets/animations/test/Book.json")}
-                  autoPlay={false}
-                />
-              </View>
-            </TouchableOpacity>
-            <View style={{ borderLeftWidth: 2, borderColor: "#BEBEBE" }}></View>
-            <TouchableOpacity
-              onPress={refreshRecepie}
-              // onPress={save ? onDeleteRecepie : onSeveRecepie}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Lottie
-                  style={{
-                    height: 35,
-                    width: 35,
-                    zIndex: 10,
-                  }}
-                  ref={ref2}
-                  loop={false}
-                  source={require("../../../../assets/animations/refreshLottie.json")}
-                  autoPlay={false}
-                />
-                <Text style={{ fontSize: 13, color: "#47646A" }}>
-                  Vygenerovat nový
-                </Text>
-              </View>
+                ref={ref}
+                loop={false}
+                source={require("../../../../assets/animations/test/Book.json")}
+                autoPlay={false}
+              />
             </TouchableOpacity>
           </View>
         </View>

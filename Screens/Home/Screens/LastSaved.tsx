@@ -14,7 +14,7 @@ const LastSaved: React.FC<{
   route: ScreenARouteProp;
 }> = ({ navigation, route }) => {
   const data = useSelector((state: RootState) => state.counterReducer.recepies);
-  const setData = data?.slice(-3); // Select the last 3 items from the array
+  const setData = data?.slice(0, -2); // Select the last 3 items from the array
 
   let testImage: any;
 
