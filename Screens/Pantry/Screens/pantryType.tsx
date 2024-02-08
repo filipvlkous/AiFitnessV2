@@ -8,14 +8,6 @@ export default function PantryType({
   route,
 }: NativeStackScreenProps<PantryStackType, "PantryType">) {
   const name = route.params.name;
-  const data = route.params.data;
 
-  return (
-    <BodyPantryText
-      navigation={navigation}
-      data={data}
-      route={route}
-      name={name}
-    />
-  );
+  return <BodyPantryText navigation={navigation} route={route} name={name} />;
 }

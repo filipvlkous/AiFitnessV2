@@ -30,9 +30,12 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, number }) => {
   }));
 
   const startAnimation = () => {
-    aniHeight.value = withTiming(collapesd ? exercises.length * 225 : 50, {
-      duration: 500,
-    });
+    aniHeight.value = withTiming(
+      collapesd ? (exercises.length + 1) * 225 : 50,
+      {
+        duration: 500,
+      }
+    );
   };
 
   return (

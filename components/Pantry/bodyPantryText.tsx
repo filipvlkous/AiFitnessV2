@@ -5,33 +5,34 @@ import PantryItem from "./PantryItem";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { PantryStackType } from "../../types/navigatorTypes";
-import ModalAddItem from "./modalAddItem";
+import { ModalAddItem } from "./modalAddItem";
 // import { deletePantry } from "../../Screens/Pantry/serverCall";
 import { deletePantry } from "../../Server/pantry";
+import { RootState } from "../../redux/store/testStore";
+import { useSelector } from "react-redux";
 
 export default function BodyPantryText({
   navigation,
   route,
   name,
-  data,
 }: NativeStackScreenProps<PantryStackType> & {
   name: string;
-  data:
-    | {
-        id: string;
-        name: string;
-        created: any;
-      }[]
-    | undefined;
 }) {
   const [openModal, setOpenModal] = useState(false);
+  const reduxData = useSelector((state: RootState) => state.counterReducer);
 
   const LoginPress = () => {
     setOpenModal(!openModal);
   };
 
+  const data = PantryStorage(name, reduxData);
   return (
-    <SafeAreView style={{ height: "100%", backgroundColor: "#FFFEFC" }}>
+    <SafeAreView
+      style={{
+        height: "100%",
+        backgroundColor: "#FFFEFC",
+      }}
+    >
       <View
         style={{
           display: "flex",
@@ -75,13 +76,48 @@ export default function BodyPantryText({
             </View>
           </TouchableOpacity>
         </View>
+        {openModal ? (
+          <View style={{ position: "absolute", top: 0 }}>
+            <ModalAddItem option={name} closeModal={LoginPress} />
+          </View>
+        ) : null}
       </View>
-      {openModal ? (
-        <ModalAddItem option={name} closeModal={LoginPress} />
-      ) : null}
     </SafeAreView>
   );
 }
+
+const PantryStorage = (name: string, data: any) => {
+  let value;
+
+  switch (name) {
+    case "Lednice":
+      value = data.fridge;
+      if (data.fridge == undefined) {
+        value = "Loading...";
+      }
+      break;
+    case "Mrazák":
+      value = data.freezer;
+      if (data.freezer == undefined) {
+        value = "Loading...";
+      }
+      break;
+    case "Police a skříně":
+      value = data.storage;
+      if (data.storage == undefined) {
+        value = "Loading...";
+      }
+      break;
+    case "Ostatní":
+      value = data.other;
+      if (data.storage == undefined) {
+        value = "Loading...";
+      }
+      break;
+  }
+
+  return value;
+};
 
 const styles = StyleSheet.create({
   HeadText: {

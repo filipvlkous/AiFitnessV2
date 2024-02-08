@@ -167,25 +167,6 @@ export const savePantryRecepie = async (text: {
   }
 };
 
-export const getFitness = async () => {
-  try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
-
-    let respond = await axios.get(`${serverUrl}/openai/getTrainingPlan`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return respond.data;
-  } catch (error) {
-    console.log(error);
-    Alert.alert("error from getFitness");
-    return false;
-  }
-};
-
 export const savePantry = async (option: string, arr: string[]) => {
   try {
     const key = firebase.auth().currentUser?.uid;

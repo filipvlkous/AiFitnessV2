@@ -1,6 +1,6 @@
 import { View, Alert, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { getFitness } from "../../../Server/recepies";
+import { getFitness } from "../../../Server/fitness";
 import firebase from "../../../initFirebase";
 import ExerciseList from "../../../components/FItness";
 import Button from "../../../components/ButtonDark";
@@ -18,15 +18,22 @@ interface TransformedItem {
 }
 
 export default function Fitness() {
+  const [dataLoading, setDataLoading] = useState(false);
   const [loading, setLoaidng] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const [data, setData] = useState<FitnessData[][] | undefined>();
 
+  let fintesButtonText = dataLoading ? "Načítání" : "Vygeneruj nový plán";
   const getData = async () => {
+    setDataLoading(true);
     try {
-      setData(await getFitness());
+      const data = await getFitness();
+      console.log(data);
+      setData(data);
     } catch (error) {
       Alert.alert("Chyba serveru, opakujte pozdeji");
+    } finally {
+      setDataLoading(false);
     }
   };
 
@@ -75,8 +82,9 @@ export default function Fitness() {
       </Text>
       {showButton ? (
         <ButtonEmptyRounded
+          disabled={dataLoading}
           onPress={() => getData()}
-          title="Vygeneruj nový plán"
+          title={fintesButtonText}
           style={{ borderRadius: 10 }}
         />
       ) : null}

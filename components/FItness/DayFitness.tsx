@@ -17,10 +17,10 @@ const DayFitness: React.FC<{
           display: "flex",
           flexDirection: "row",
           paddingHorizontal: 10,
-          paddingVertical: 10,
+          paddingVertical: 20,
           alignItems: "center",
           justifyContent: "center",
-          gap: 10,
+          gap: 15,
         }}
       >
         <Image
@@ -55,19 +55,28 @@ const DayFitness: React.FC<{
             }}
           ></View>
         ) : null}
+        {clicked ? (
+          <View
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#000",
+            }}
+          >
+            <Text
+              style={{
+                position: "absolute",
+                top: "50%",
+                alignSelf: "center",
+                textAlignVertical: "center",
+              }}
+            >
+              Odcviceno
+            </Text>
+          </View>
+        ) : null}
       </View>
-      {clicked ? (
-        <Text
-          style={{
-            position: "absolute",
-            top: "50%",
-            alignSelf: "center",
-            textAlignVertical: "center",
-          }}
-        >
-          Odcviceno
-        </Text>
-      ) : null}
     </TouchableOpacity>
   );
 };

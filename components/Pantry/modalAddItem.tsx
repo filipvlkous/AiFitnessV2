@@ -23,7 +23,7 @@ import Button from "../ButtonDark";
 import { savePantry } from "../../Server/recepies";
 import ButtonLoading from "../ButtonDarkLoading";
 
-export default function ModalAddItem({
+export function ModalAddItem({
   closeModal,
   option,
 }: {
@@ -39,7 +39,7 @@ export default function ModalAddItem({
 
   const handleClick = () => {
     slideUpOpacity.value = 0;
-    slideUp.value = 330;
+    slideUp.value = 830;
     slideUpBg.value = 0;
 
     Keyboard.dismiss();
@@ -71,7 +71,7 @@ export default function ModalAddItem({
 
   const handleTextChange = useCallback(
     (newText: string) => {
-      if (newText === ",") return;
+      if (newText.length == 1 && newText === ",") return;
 
       if (newText.length > text.length && newText.includes(",")) {
         if (!inputTest(newText)) return;
@@ -109,13 +109,13 @@ export default function ModalAddItem({
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
-        slideUp.value = 650;
+        slideUp.value = 850;
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
-        slideUp.value = 750;
+        slideUp.value = 950;
       }
     );
 
@@ -128,7 +128,7 @@ export default function ModalAddItem({
   useEffect(() => {
     slideUpBg.value = 0.5;
     slideUpOpacity.value = 1;
-    slideUp.value = 750;
+    slideUp.value = 950;
   }, []);
 
   return (
@@ -195,8 +195,8 @@ export default function ModalAddItem({
     </TouchableWithoutFeedback>
   );
 }
-const heightDim = Dimensions.get("screen").height;
-const widthDim = Dimensions.get("screen").width;
+export const heightDim = Dimensions.get("screen").height;
+export const widthDim = Dimensions.get("screen").width;
 
 const styles = StyleSheet.create({
   ModalContainer: {

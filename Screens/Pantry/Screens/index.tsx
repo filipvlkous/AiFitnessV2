@@ -1,27 +1,20 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { PantryStackType } from "../../../types/navigatorTypes";
 import Button from "../../../components/ButtonDark";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import SafeAreView from "../../../components/SafeAreView";
-import { RootState, useAppDispatch } from "../../../redux/store/testStore";
-import {
-  getFreezer,
-  getFridge,
-  getStorage,
-  getOther,
-} from "../../../redux/actions/testLoginUser";
+import { RootState } from "../../../redux/store/testStore";
 import { useSelector } from "react-redux";
 import { fetchPantryRecepie } from "../../../Server/recepies";
 import ModalPantry from "../modal";
-
+import { heightDim } from "../../../components/Pantry/modalAddItem";
 export default function Index({
   navigation,
   route,
 }: NativeStackScreenProps<PantryStackType>) {
   const data = useSelector((state: RootState) => state.counterReducer);
-  const [loaded, setLoaded] = useState(true);
   const [modalShow, setModalShow] = useState(false);
   const [modalData, setModalData] = useState<
     | {
@@ -31,7 +24,6 @@ export default function Index({
       }
     | undefined
   >();
-  const dispatch = useAppDispatch();
   let combinedArray: any[] = [];
   // let dataLenght =data.freezer?.length? + data.fridge?.length? + data.other?.length? + data.storage?.length
   const callFetchPantryRecepie = async () => {
@@ -53,31 +45,15 @@ export default function Index({
     });
     await fetchPantryRecepie(newArray).then((e) => {
       if (e != undefined) {
-        console.log(e);
         setModalShow(true);
         setModalData(e);
       }
     });
   };
 
-  useEffect(() => {
-    const freeyzSub = dispatch(getFreezer(data.currentUser?.uid));
-    const fridgeSub = dispatch(getFridge(data.currentUser?.uid));
-    const storageSub = dispatch(getStorage(data.currentUser?.uid));
-    const otherSub = dispatch(getOther(data.currentUser?.uid));
-    setLoaded(false);
-
-    return () => {
-      //clean up
-      freeyzSub();
-      fridgeSub();
-      storageSub();
-      otherSub();
-    };
-  }, []);
   return (
     <SafeAreView style={{ height: "100%", backgroundColor: "#FFFEFC" }}>
-      <View style={{ paddingHorizontal: 20 }}>
+      <View style={{ paddingHorizontal: 20, height: heightDim }}>
         <Text style={styles.HeadTextStyle}>Spižírna</Text>
 
         <PantryStorage
@@ -190,21 +166,19 @@ const PantryStorage = ({
       break;
   }
   const navigateToScreen = () => {
-    // Use the name prop to navigate to the corresponding screen
     if (name === "Lednice") {
-      navigation.navigate("PantryType", { name: "Lednice", data: data.fridge });
+      navigation.navigate("PantryType", { name: "Lednice" });
     } else if (name === "Mrazák") {
-      navigation.navigate("PantryType", { name: "Mrazák", data: data.freezer });
+      navigation.navigate("PantryType", { name: "Mrazák" });
     } else if (name === "Police a skříně") {
       navigation.navigate("PantryType", {
         name: "Police a skříně",
-        data: data.storage,
       });
     } else if (name === "Ostatní") {
-      navigation.navigate("PantryType", { name: "Ostatní", data: data.other });
+      navigation.navigate("PantryType", { name: "Ostatní" });
     }
-    // Add more conditions for other screen names as needed
   };
+
   return (
     <TouchableOpacity style={styles.container} onPress={navigateToScreen}>
       <View

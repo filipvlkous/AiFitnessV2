@@ -16,7 +16,14 @@ import React, { useEffect } from "react";
 import { CustomTab } from "./TabIcon";
 import { useIsFocused } from "@react-navigation/native";
 import { useAppDispatch } from "../redux/store/testStore";
-import { fetchUser, getAllRecepies } from "../redux/actions/testLoginUser";
+import {
+  fetchUser,
+  getAllRecepies,
+  getFreezer,
+  getFridge,
+  getOther,
+  getStorage,
+} from "../redux/actions/testLoginUser";
 import db from "../initFirebase";
 import { TabMainNavigator } from "../types/navigatorTypes";
 
@@ -24,6 +31,21 @@ export default function Index({ numb }: { numb: number }) {
   const Tab = createBottomTabNavigator<TabMainNavigator>();
   const dispatch = useAppDispatch();
   const user = db.auth().currentUser;
+
+  useEffect(() => {
+    const freeyzSub = dispatch(getFreezer(user.uid));
+    const fridgeSub = dispatch(getFridge(user.uid));
+    const storageSub = dispatch(getStorage(user.uid));
+    const otherSub = dispatch(getOther(user.uid));
+
+    return () => {
+      //clean up
+      freeyzSub();
+      fridgeSub();
+      storageSub();
+      otherSub();
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(fetchUser());

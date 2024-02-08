@@ -82,7 +82,7 @@ export const getFreezer = (id: string | undefined) => {
       .firestore()
       .collection("users")
       .doc(id)
-      .collection("Freezer")
+      .collection("Mrazák")
       .orderBy("created", "desc");
 
     const listener = docRef.onSnapshot((querySnapshot) => {
@@ -103,7 +103,7 @@ export const getFridge = (id: string | undefined) => {
       .firestore()
       .collection("users")
       .doc(id)
-      .collection("Fridge")
+      .collection("Lednice")
       .orderBy("created", "desc");
 
     const listener = docRef.onSnapshot((querySnapshot) => {
@@ -124,7 +124,7 @@ export const getStorage = (id: string | undefined) => {
       .firestore()
       .collection("users")
       .doc(id)
-      .collection("Storage")
+      .collection("Skříně")
       .orderBy("created", "desc");
 
     const listener = docRef.onSnapshot((querySnapshot) => {
@@ -145,7 +145,7 @@ export const getOther = (id: string | undefined) => {
       .firestore()
       .collection("users")
       .doc(id)
-      .collection("Other")
+      .collection("Ostatní")
       .orderBy("created", "desc");
 
     const listener = docRef.onSnapshot((querySnapshot) => {

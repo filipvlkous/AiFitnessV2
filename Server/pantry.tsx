@@ -38,12 +38,9 @@ export const deletePantry = async (option: string, id: string) => {
       },
       data: { option, id }, // Use the "data" property to send the payload
     };
-    let response = await axios.delete(
-      `${serverUrl}/firebase/deletePantryItems`,
-      config
-    );
+    await axios.delete(`${serverUrl}/firebase/deletePantryItems`, config);
   } catch (error) {
-    Alert.alert("error from getOneMeal");
+    Alert.alert("error  while deleting item");
     return false;
   }
 };

@@ -31,7 +31,7 @@ export type LoginRegisterTypeStack = {
 
 export type PantryStackType = {
   Index: undefined;
-  PantryType: { name: string; data: PantryStore };
+  PantryType: { name: string };
 };
 
 export type DataType = {
