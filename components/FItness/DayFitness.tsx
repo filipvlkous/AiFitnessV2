@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View, Text, Image } from "react-native";
-
+import done from "../../assets/done.png";
 import { Exercise } from ".";
 
 const DayFitness: React.FC<{
@@ -59,21 +59,17 @@ const DayFitness: React.FC<{
           <View
             style={{
               position: "absolute",
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#000",
+              width: "105%",
+              height: "105%",
+              backgroundColor: "#0000007c",
+              borderRadius: 10,
+              justifyContent: "center",
             }}
           >
-            <Text
-              style={{
-                position: "absolute",
-                top: "50%",
-                alignSelf: "center",
-                textAlignVertical: "center",
-              }}
-            >
-              Odcviceno
-            </Text>
+            <Image
+              style={{ width: 150, height: 150, marginLeft: 20 }}
+              source={done}
+            />
           </View>
         ) : null}
       </View>

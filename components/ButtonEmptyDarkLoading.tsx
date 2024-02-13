@@ -3,14 +3,14 @@ import LottieView from "lottie-react-native";
 import loadingAnim from "../assets/animations/loading.json";
 import { useEffect, useRef } from "react";
 
-const ButtonLoading: React.FC<TouchableOpacityProps> = ({ style }) => {
+const ButtonEmptyLoading: React.FC<TouchableOpacityProps> = ({ style }) => {
   const animationRef = useRef<LottieView>(null);
   useEffect(() => {
     animationRef.current?.play();
   }, []);
 
   return (
-    <View style={[styles.button, styles.buttonPressed, { height: 52 }, style]}>
+    <View style={[styles.button, { height: 52 }, style]}>
       <LottieView
         ref={animationRef}
         source={loadingAnim}
@@ -31,17 +31,21 @@ const ButtonLoading: React.FC<TouchableOpacityProps> = ({ style }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#47646A",
+    backgroundColor: "#ffff",
     paddingVertical: 16,
     paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: "center",
+    borderRadius: 10,
     width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#47646A",
     position: "relative",
   },
-  buttonPressed: {
-    backgroundColor: "#47646A",
-  },
+
   buttonText: {
     color: "#FFFFFF",
     // fontSize: 16,
@@ -52,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtonLoading;
+export default ButtonEmptyLoading;

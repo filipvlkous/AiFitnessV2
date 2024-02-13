@@ -46,6 +46,7 @@ export const fetchOneRecepie = async (
       }
     );
 
+    console.log(respond.data);
     return respond.data;
   } catch (error) {
     Alert.alert("Can't connect to server now. Please try agin later.");

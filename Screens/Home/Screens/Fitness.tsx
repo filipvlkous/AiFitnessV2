@@ -1,10 +1,10 @@
 import { View, Alert, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { getFitness } from "../../../Server/fitness";
+import { getFitness, getSavedFitness } from "../../../Server/fitness";
 import firebase from "../../../initFirebase";
 import ExerciseList from "../../../components/FItness";
-import Button from "../../../components/ButtonDark";
 import ButtonEmptyRounded from "../../../components/ButtonEmptyRounded";
+import ButtonEmptyLoading from "../../../components/ButtonEmptyDarkLoading";
 type FitnessData = {
   gif: string;
   name: string;
@@ -28,9 +28,9 @@ export default function Fitness() {
     setDataLoading(true);
     try {
       const data = await getFitness();
-      console.log(data);
       setData(data);
     } catch (error) {
+      console.log(error);
       Alert.alert("Chyba serveru, opakujte pozdeji");
     } finally {
       setDataLoading(false);
@@ -40,8 +40,8 @@ export default function Fitness() {
   useEffect(() => {
     const genRandomKey = async () => {
       try {
-        const { transformedArray, TimeDate } = await getFbData();
-
+        const data = await getSavedFitness();
+        const { transformedArray, TimeDate } = getFbData(data);
         const old = dateCalcul(TimeDate);
 
         if (old < 14) {
@@ -50,6 +50,7 @@ export default function Fitness() {
 
         setData(transformedArray);
       } catch (error) {
+        console.log(error);
         Alert.alert("Chyba pri nacitani fitness");
       } finally {
         setLoaidng(false);
@@ -80,14 +81,19 @@ export default function Fitness() {
       >
         Fitness plan
       </Text>
-      {showButton ? (
-        <ButtonEmptyRounded
-          disabled={dataLoading}
-          onPress={() => getData()}
-          title={fintesButtonText}
-          style={{ borderRadius: 10 }}
-        />
-      ) : null}
+
+      {!dataLoading ? (
+        showButton ? (
+          <ButtonEmptyRounded
+            disabled={dataLoading}
+            onPress={() => getData()}
+            title={fintesButtonText}
+            style={{ borderRadius: 10 }}
+          />
+        ) : null
+      ) : (
+        <ButtonEmptyLoading />
+      )}
       <View>
         {data != undefined
           ? data.map((exerciseGroup, index) => (
@@ -121,32 +127,24 @@ const dateCalcul = (date) => {
   return daysDifference;
 };
 
-const getFbData = async () => {
+const getFbData = (snapshot) => {
   try {
-    const snapshot = await firebase
-      .firestore()
-      .collection("users")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("fitness")
-      .doc("5LWUp7KzV0d6G3p4Y7Ki")
-      .get();
-    // setData(snapshot.data().newArr);
-
-    const transformedArray: TransformedItem[][] = snapshot
-      .data()
-      .newArr.map((innerObj: any) => {
+    const transformedArray: TransformedItem[][] = snapshot.newArr.map(
+      (innerObj: any) => {
         const tArray: any[] = innerObj.day;
         return tArray.map((tItem: any) => ({
           gif: tItem.gif,
           name: tItem.name,
           repsRange: tItem.repsRange,
         }));
-      });
+      }
+    );
 
-    const TimeDate = snapshot.data().timeStamp;
+    const TimeDate = snapshot.timeStamp;
 
     return { transformedArray, TimeDate };
   } catch (error) {
+    console.log(error);
     throw Alert.alert("chyba fitness");
   }
 };

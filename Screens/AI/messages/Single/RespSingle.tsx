@@ -14,7 +14,6 @@ import Lottie from "lottie-react-native";
 
 export default function BotOneMeal({ value }: { value: any }) {
   const ref = useRef<Lottie>(null);
-  const ref2 = useRef<Lottie>(null);
   const [loading, setLoading] = useState(false);
   const [save, setSave] = useState(false);
   const [id, setId] = useState<null | string>(null);
@@ -50,12 +49,6 @@ export default function BotOneMeal({ value }: { value: any }) {
         setLoading(false);
       }
     }
-  };
-
-  const refreshRecepie = async () => {
-    try {
-      ref2.current?.play();
-    } catch (error) {}
   };
 
   const slideUp = useSharedValue(-300);

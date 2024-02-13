@@ -7,6 +7,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 
 export default function Reset({
@@ -19,16 +20,19 @@ export default function Reset({
   singleRecepies: () => void;
 }) {
   const slideUp = useSharedValue(-300);
+  const opacityAnim = useSharedValue(0);
 
   const style = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: withSpring(slideUp.value) }],
+      opacity: withTiming(opacityAnim.value),
     };
   });
 
   useEffect(() => {
     setTimeout(() => {
       slideUp.value = 0;
+      opacityAnim.value = 1;
     }, 5000);
   }, []);
 

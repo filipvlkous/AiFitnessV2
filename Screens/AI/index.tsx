@@ -94,7 +94,7 @@ export default function AIScreenIndex() {
             key: keyText,
             option: options,
             user: "USER",
-            msg: "I wanna have recepie for:",
+            msg: "Chtěl bych vygenerovat recept pro",
           },
           { text: respond, option: keyText, user: "BOT" },
         ]);
