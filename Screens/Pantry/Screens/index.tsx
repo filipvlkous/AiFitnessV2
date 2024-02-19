@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { PantryStackType } from "../../../types/navigatorTypes";
@@ -7,15 +13,17 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import SafeAreView from "../../../components/SafeAreView";
 import { RootState } from "../../../redux/store/testStore";
 import { useSelector } from "react-redux";
-import { fetchPantryRecepie } from "../../../Server/recepies";
-import ModalPantry from "../modal";
+import { fetchPantryRecepie } from "../../../Server/pantry";
+import ModalPantry from "../../../components/Pantry/modal";
 import { heightDim } from "../../../components/Pantry/modalAddItem";
+import ButtonLoading from "../../../components/ButtonDarkLoading";
 export default function Index({
   navigation,
   route,
 }: NativeStackScreenProps<PantryStackType>) {
   const data = useSelector((state: RootState) => state.counterReducer);
   const [modalShow, setModalShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [modalData, setModalData] = useState<
     | {
         ingredients: string;
@@ -27,6 +35,7 @@ export default function Index({
   let combinedArray: any[] = [];
   // let dataLenght =data.freezer?.length? + data.fridge?.length? + data.other?.length? + data.storage?.length
   const callFetchPantryRecepie = async () => {
+    setLoading(true);
     if (
       data.freezer != undefined &&
       data.fridge != undefined &&
@@ -43,10 +52,11 @@ export default function Index({
     combinedArray.map((i: any) => {
       newArray.push(i.name);
     });
-    await fetchPantryRecepie(newArray).then((e) => {
+    fetchPantryRecepie(newArray).then((e) => {
       if (e != undefined) {
         setModalShow(true);
         setModalData(e);
+        setLoading(false);
       }
     });
   };
@@ -93,21 +103,26 @@ export default function Index({
           Prosím, uložte si alespoň 5 potravin.
         </Text>
 
-        <Button
-          onPress={callFetchPantryRecepie}
-          disabled={combinedArray.length >= 5}
-          style={
-            combinedArray.length <= 5
-              ? { marginTop: 30 }
-              : { marginTop: 30, backgroundColor: "#47646a70" }
-          }
-          img={true}
-          title="Generovat recepty"
-        />
+        {!loading ? (
+          <Button
+            onPress={callFetchPantryRecepie}
+            disabled={combinedArray.length >= 5}
+            style={
+              combinedArray.length <= 5
+                ? { marginTop: 30 }
+                : { marginTop: 30, backgroundColor: "#47646a70" }
+            }
+            img={true}
+            title="Generovat recepty"
+          />
+        ) : (
+          <ButtonLoading style={{ marginTop: 30 }} />
+        )}
+
         {modalData != undefined ? (
           <Button
             img={false}
-            title="Show recepie"
+            title="Ukaž recept"
             style={{ marginTop: 15 }}
             onPress={() => setModalShow(true)}
           />
@@ -115,7 +130,6 @@ export default function Index({
       </View>
       {modalShow ? (
         <ModalPantry
-          heightVal={0}
           closeModal={() => setModalShow(false)}
           visible={modalShow}
           modalData={modalData}

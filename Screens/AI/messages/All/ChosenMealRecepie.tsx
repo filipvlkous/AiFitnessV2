@@ -30,7 +30,7 @@ export default function BotMessage({ value }: IBotMsg) {
 
   const onSeveRecepie = async () => {
     try {
-      await saveRecepie(value.option, value.text).then((e) => {
+      await saveRecepie(value.option, value.text, true).then((e) => {
         if (!e) return;
         setId(e);
         ref.current?.play();

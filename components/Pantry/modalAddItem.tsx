@@ -20,7 +20,7 @@ import Animated, {
 import { Button as PaperButton } from "react-native-paper";
 import FoodBuble from "../../Screens/LogRegister/Register/steps/StepThree/foodBuble";
 import Button from "../ButtonDark";
-import { savePantry } from "../../Server/recepies";
+import { savePantry } from "../../Server/pantry";
 import ButtonLoading from "../ButtonDarkLoading";
 
 export function ModalAddItem({
@@ -72,7 +72,6 @@ export function ModalAddItem({
   const handleTextChange = useCallback(
     (newText: string) => {
       if (newText.length == 1 && newText === ",") return;
-
       if (newText.length > text.length && newText.includes(",")) {
         if (!inputTest(newText)) return;
 
@@ -87,9 +86,10 @@ export function ModalAddItem({
   );
 
   const inputTest = (text: string) => {
-    const exerciseRegex = /^[A-Za-z0-9,./-:() ]{1,20}$/g;
+    const exerciseRegex =
+      /^[A-Za-z0-9,./-:()ěščřžýáíéťďňĚŠČŘŘŽÝÁÍÉŤĎŇúůÚŮ ]{1,30}$/g;
 
-    if (text.length < 20 && exerciseRegex.test(text)) return true;
+    if (exerciseRegex.test(text)) return true;
   };
 
   const handleButtonClick = async () => {

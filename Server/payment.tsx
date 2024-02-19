@@ -1,11 +1,10 @@
 import axios from "axios";
-import { getValueFor } from "../secureToken";
 import firebase from "../initFirebase";
 import { serverUrl } from ".";
 
 export const fetchPaymentSheetParams = async () => {
-  const key = firebase.auth().currentUser?.uid;
-  const token = await getValueFor(key);
+  const token = await firebase.auth().currentUser?.getIdToken();
+
   const response = await axios.get(`${serverUrl}/payment/create-subscription`, {
     headers: {
       // "Content-Type": "application/json",
@@ -40,8 +39,8 @@ export const fetchPaymentSheetParams2 = async () => {
 };
 
 export const fetchPaymentSheetParams3 = async () => {
-  const key = firebase.auth().currentUser?.uid;
-  const token = await getValueFor(key);
+  const token = await firebase.auth().currentUser?.getIdToken();
+
   const response = await axios.post(
     `${serverUrl}/payment/create-subscription`,
     {},
@@ -64,8 +63,8 @@ export const fetchPaymentSheetParams3 = async () => {
 };
 
 const cancelSub = async (id: string) => {
-  const key = firebase.auth().currentUser?.uid;
-  const token = await getValueFor(key);
+  const token = await firebase.auth().currentUser?.getIdToken();
+
   const response = await axios.post(
     `${serverUrl}/payment/subscriptionCancel`,
     { id: id },

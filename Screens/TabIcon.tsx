@@ -2,19 +2,15 @@ import { ParamListBase, RouteProp } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 // import Lottie from "lottie-react-native";
 import React from "react";
-export const CustomTab = ({
-  focused,
-  color,
-  size,
-  route,
-  style,
-}: {
-  style?: any;
+
+interface CustomTabProps {
   focused: boolean;
-  color?: string;
   size: number;
   route: RouteProp<ParamListBase, "Cookbook" | "Pantry" | "Profile" | "Home">;
-}) => {
+  style?: any;
+}
+
+export const CustomTab = ({ focused, size, route, style }: CustomTabProps) => {
   const ref = React.useRef<LottieView>(null);
   let filePath;
 

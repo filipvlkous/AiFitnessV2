@@ -12,26 +12,6 @@ import Animated, {
 import ButtonEmptyRounded from "../../../../components/ButtonEmptyRounded";
 import Button from "../../../../components/ButtonDark";
 
-const ButtonStyle = {
-  backgroundColor: "#ffff",
-  paddingVertical: 10,
-  paddingHorizontal: 0,
-  borderRadius: 10,
-  width: "33%",
-};
-
-const SelectedButtonStyle = {
-  backgroundColor: "#47646A",
-  paddingVertical: 10,
-  paddingHorizontal: 0,
-  borderRadius: 10,
-  width: "33%",
-};
-
-const TextColot = {
-  color: "#FFFF",
-};
-
 export default function SingleRecepie({
   click,
   generateOneMeal,
@@ -145,3 +125,23 @@ export default function SingleRecepie({
     </Animated.View>
   );
 }
+
+const ButtonStyle = {
+  backgroundColor: "#ffff",
+  paddingVertical: 10,
+  paddingHorizontal: 0,
+  borderRadius: 10,
+  width: "33%",
+};
+
+const SelectedButtonStyle = {
+  backgroundColor: "#47646A",
+  paddingVertical: 10,
+  paddingHorizontal: 0,
+  borderRadius: 10,
+  width: "33%",
+};
+
+const TextColot = {
+  color: "#FFFF",
+};

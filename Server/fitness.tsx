@@ -1,5 +1,4 @@
 import firebase from "firebase/compat";
-import { getValueFor } from "../secureToken";
 import axios from "axios";
 import { serverUrl } from ".";
 import { Alert } from "react-native";
@@ -7,8 +6,7 @@ import { date } from "yup";
 
 export const getFitness = async () => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
 
     let respond = await axios.get(`${serverUrl}/openai/getTrainingPlan`, {
       headers: {
@@ -26,8 +24,7 @@ export const getFitness = async () => {
 
 export const getSavedFitness = async () => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
 
     let respond = await axios.get(`${serverUrl}/firebase/getFitnessData`, {
       headers: {
@@ -38,7 +35,6 @@ export const getSavedFitness = async () => {
 
     return respond.data.data;
   } catch (error) {
-    console.log(error);
-    Alert.alert("error from getFitness");
+    throw Alert.alert("Error from getFitness:" + error.message);
   }
 };

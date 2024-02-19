@@ -1,6 +1,5 @@
 import axios from "axios";
 import { InitForm } from "../types/navigatorTypes";
-import { getValueFor } from "../secureToken";
 import { Alert } from "react-native";
 import firebase from "../initFirebase";
 import { serverUrl } from ".";
@@ -73,12 +72,12 @@ export const updateUserDetails = async ({
   aim: string;
 }) => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const user = firebase.auth().currentUser;
+    const token = await user.getIdToken();
 
     let respond = await axios.post(
       `${serverUrl}/firebase/updateUserDetails`,
-      { data: { diet, height, weight, allergies, aim }, uid: key },
+      { data: { diet, height, weight, allergies, aim }, uid: user.uid },
       {
         headers: {
           "Content-Type": "application/json",

@@ -81,18 +81,18 @@ export default function AIScreenIndex() {
   const generateRecepie = async (
     recepie: string,
     keyText: string,
-    options: string
+    option: string
   ) => {
     setLoading(true);
 
     try {
-      const respond = await fetchOneRecepie(recepie, keyText, options);
+      const respond = await fetchOneRecepie(recepie, keyText, option);
       if (respond != undefined) {
         setTest([
           ...test,
           {
             key: keyText,
-            option: options,
+            option: option,
             user: "USER",
             msg: "Chtěl bych vygenerovat recept pro",
           },

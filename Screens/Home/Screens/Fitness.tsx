@@ -1,10 +1,10 @@
 import { View, Alert, Text } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getFitness, getSavedFitness } from "../../../Server/fitness";
-import firebase from "../../../initFirebase";
 import ExerciseList from "../../../components/FItness";
 import ButtonEmptyRounded from "../../../components/ButtonEmptyRounded";
 import ButtonEmptyLoading from "../../../components/ButtonEmptyDarkLoading";
+import LottieView from "lottie-react-native";
 type FitnessData = {
   gif: string;
   name: string;
@@ -50,7 +50,7 @@ export default function Fitness() {
 
         setData(transformedArray);
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
         Alert.alert("Chyba pri nacitani fitness");
       } finally {
         setLoaidng(false);
@@ -62,13 +62,41 @@ export default function Fitness() {
 
   if (loading)
     return (
-      <View>
-        <Text>Loading</Text>
+      <View
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LottieView
+          loop={true}
+          autoPlay={true}
+          speed={1.5}
+          style={{ width: 200, height: 200 }}
+          source={require("../../../assets/animations/fitnessLoading.json")}
+        />
+        <Text
+          style={[
+            {
+              fontSize: 16,
+              fontFamily: "Inter-SemiBold",
+              color: "#000000",
+              paddingTop: 20,
+              position: "absolute",
+              bottom: 10,
+            },
+          ]}
+        >
+          Načítání fitness tréniku
+        </Text>
       </View>
     );
 
   return (
-    <View>
+    <View style={{ backgroundColor: "#4cb52cks9" }}>
       <Text
         style={[
           {

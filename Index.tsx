@@ -8,36 +8,37 @@ import firebase from "./initFirebase";
 import HomeIndex from "./Screens/index";
 import { View, Text } from "react-native";
 import { useFonts } from "expo-font";
-import { save } from "./secureToken";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store/testStore";
 
 const Stack = createNativeStackNavigator<LoginRegisterTypeStack>();
 
-export default function Index(): JSX.Element {
-  const [authUser, setAuthUser] = useState<{
-    loaded: boolean;
-    currentUser: UserInfo | null;
-    loggedIn: boolean;
-  }>({ loaded: false, currentUser: null, loggedIn: false });
+const fonts = {
+  "Inter-Black": require("./assets/fonts/Inter-Black.ttf"),
+  "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
+  "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
+  "Inter-Medium": require("./assets/fonts/Inter-Medium.ttf"),
+  "Inter-ExtraLight": require("./assets/fonts/Inter-ExtraLight.ttf"),
+  "Inter-Light": require("./assets/fonts/Inter-Light.ttf"),
+  "Inter-ExtraBold": require("./assets/fonts/Inter-ExtraBold.ttf"),
+  "Inter-Thin": require("./assets/fonts/Inter-Thin.ttf"),
+  "Inter-SemiBold": require("./assets/fonts/Inter-SemiBold.ttf"),
+};
 
-  const [fontsLoaded] = useFonts({
-    "Inter-Black": require("./assets/fonts/Inter-Black.ttf"),
-    "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
-    "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
-    "Inter-Medium": require("./assets/fonts/Inter-Medium.ttf"),
-    "Inter-ExtraLight": require("./assets/fonts/Inter-ExtraLight.ttf"),
-    "Inter-Light": require("./assets/fonts/Inter-Light.ttf"),
-    "Inter-ExtraBold": require("./assets/fonts/Inter-ExtraBold.ttf"),
-    "Inter-Thin": require("./assets/fonts/Inter-Thin.ttf"),
-    "Inter-SemiBold": require("./assets/fonts/Inter-SemiBold.ttf"),
+export default function Index(): JSX.Element {
+  const [authUser, setAuthUser] = useState({
+    loaded: false,
+    currentUser: null as UserInfo | null,
+    loggedIn: false,
   });
+
+  const [fontsLoaded] = useFonts(fonts);
   const count = useSelector(
     (state: RootState) => state.counterReducer.numberDoc
   );
 
   useEffect(() => {
-    const unsubscribeAuth = firebase.auth().onAuthStateChanged(async (user) => {
+    const unsubscribeAuth = firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         setAuthUser({
           loggedIn: false,
@@ -45,10 +46,6 @@ export default function Index(): JSX.Element {
           currentUser: null,
         });
       } else {
-        const id = user.uid;
-        const token = await user.getIdToken();
-        save(id, token);
-
         setAuthUser({
           loggedIn: true,
           loaded: true,

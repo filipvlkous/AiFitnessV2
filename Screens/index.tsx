@@ -27,8 +27,23 @@ import {
 import db from "../initFirebase";
 import { TabMainNavigator } from "../types/navigatorTypes";
 
+const Tab = createBottomTabNavigator<TabMainNavigator>();
+
+const CustomButton = ({
+  children,
+  onPress,
+}: {
+  children: React.ReactNode;
+  onPress?: (event: GestureResponderEvent) => void;
+}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={{ height: 50 }}>{children}</View>
+    </TouchableOpacity>
+  );
+};
+
 export default function Index({ numb }: { numb: number }) {
-  const Tab = createBottomTabNavigator<TabMainNavigator>();
   const dispatch = useAppDispatch();
   const user = db.auth().currentUser;
 
@@ -56,20 +71,6 @@ export default function Index({ numb }: { numb: number }) {
     };
   }, [numb]);
 
-  const CustomButton = ({
-    children,
-    onPress,
-  }: {
-    children: React.ReactNode;
-    onPress?: (event: GestureResponderEvent) => void;
-  }) => {
-    return (
-      <TouchableOpacity onPress={onPress}>
-        <View style={{ height: 50 }}>{children}</View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <SafeAreaProvider>
       <Tab.Navigator
@@ -80,12 +81,11 @@ export default function Index({ numb }: { numb: number }) {
       >
         <Tab.Screen
           options={({ route, navigation }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+            tabBarIcon: () => {
               return (
                 <CustomTab
                   style={{ zIndex: 20, position: "absolute" }}
                   focused={useIsFocused()}
-                  color={color}
                   size={50}
                   route={route}
                 />
@@ -99,7 +99,7 @@ export default function Index({ numb }: { numb: number }) {
           name="Pantry"
           component={PantryScreen}
           options={({ route, navigation }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+            tabBarIcon: () => {
               return (
                 <View
                   style={{
@@ -113,7 +113,6 @@ export default function Index({ numb }: { numb: number }) {
                 >
                   <CustomTab
                     focused={useIsFocused()}
-                    color={null}
                     size={200}
                     route={route}
                   />
@@ -142,12 +141,11 @@ export default function Index({ numb }: { numb: number }) {
           name="Cookbook"
           component={CookBookIndex}
           options={({ route, navigation }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+            tabBarIcon: () => {
               return (
                 <CustomTab
                   style={{ marginTop: 13, marginLeft: 20 }}
                   focused={useIsFocused()}
-                  color={color}
                   size={60}
                   route={route}
                 />
@@ -159,14 +157,9 @@ export default function Index({ numb }: { numb: number }) {
           name="Profile"
           component={ProfileScreen}
           options={({ route, navigation }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+            tabBarIcon: () => {
               return (
-                <CustomTab
-                  focused={useIsFocused()}
-                  color={color}
-                  size={35}
-                  route={route}
-                />
+                <CustomTab focused={useIsFocused()} size={35} route={route} />
               );
             },
           })}

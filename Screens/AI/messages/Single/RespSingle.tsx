@@ -21,7 +21,7 @@ export default function BotOneMeal({ value }: { value: any }) {
   const onSeveRecepie = async () => {
     setLoading(true);
     try {
-      await saveRecepie(value.option, value.text).then((e) => {
+      await saveRecepie(value.option, value.text, false).then((e) => {
         setId(e);
         ref.current?.play();
         setSave(true);

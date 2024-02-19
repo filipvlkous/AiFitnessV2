@@ -1,13 +1,11 @@
 import axios from "axios";
-import { getValueFor } from "../secureToken";
 import firebase from "../initFirebase";
 import { Alert } from "react-native";
 import { serverUrl } from ".";
 
 export const fetchRecepiesForDay = async () => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
 
     let respond = await axios.get(`${serverUrl}/openai/getDayRecepies`, {
       headers: {
@@ -18,6 +16,7 @@ export const fetchRecepiesForDay = async () => {
     const result = parseText(respond.data);
     return result;
   } catch (error) {
+    console.log(error);
     Alert.alert("Can't connect to server now. Please try agin later.");
   }
 };
@@ -25,18 +24,18 @@ export const fetchRecepiesForDay = async () => {
 export const fetchOneRecepie = async (
   recepie: string,
   keyText: string,
-  options: string
+  option: string
 ) => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
+    // const token = await getValueFor(key);
 
     let respond = await axios.post(
       `${serverUrl}/openai/getRecepie`,
       {
         text: recepie,
         key: keyText,
-        options: options,
+        option: option,
       },
       {
         headers: {
@@ -55,8 +54,7 @@ export const fetchOneRecepie = async (
 
 export const getOneMeal = async (meal: string) => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
 
     let respond = await axios.post(
       `${serverUrl}/openai/getOneMeal`,
@@ -79,8 +77,7 @@ export const getOneMeal = async (meal: string) => {
 
 export const deleteRecepie = async (idRecepie: string) => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
 
     const config = {
       headers: {
@@ -96,38 +93,17 @@ export const deleteRecepie = async (idRecepie: string) => {
   }
 };
 
-export const fetchPantryRecepie = async (items: any[] | undefined) => {
+export const saveRecepie = async (
+  option: string,
+  text: string,
+  allRecepie: boolean
+) => {
   try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
-
-    let respond = await axios.post(
-      `${serverUrl}/openai/getPantryRecepie`,
-      { items },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (respond.status == 200) {
-      return respond.data;
-    }
-  } catch (error) {
-    Alert.alert("Can't connect to server. Please try agin later.");
-  }
-};
-
-export const saveRecepie = async (option: string, text: string) => {
-  try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
+    const token = await firebase.auth().currentUser?.getIdToken();
 
     let respond = await axios.post(
       `${serverUrl}/firebase/saveRecepie`,
-      { text, option },
+      { text, option, parsed: false, allRecepie },
       {
         headers: {
           "Content-Type": "application/json",
@@ -138,54 +114,6 @@ export const saveRecepie = async (option: string, text: string) => {
     return respond.data;
   } catch (error) {
     Alert.alert("Can't save recepie now. Please try agin later.");
-    return false;
-  }
-};
-
-export const savePantryRecepie = async (text: {
-  ingredients: string;
-  name: string;
-  instructions: string;
-}) => {
-  try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
-
-    let respond = await axios.post(
-      `${serverUrl}/firebase/savePantryRecepie`,
-      { text, option: "Pantry recepie" },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return respond.data;
-  } catch (error) {
-    Alert.alert("Can't save recepie now. Please try agin later.");
-    return false;
-  }
-};
-
-export const savePantry = async (option: string, arr: string[]) => {
-  try {
-    const key = firebase.auth().currentUser?.uid;
-    const token = await getValueFor(key);
-
-    let respond = await axios.post(
-      `${serverUrl}/firebase/savePantryItems`,
-      { option, arr },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return respond.data;
-  } catch (error: any) {
-    Alert.alert("Can't connect to server now. Please try agin later.");
     return false;
   }
 };

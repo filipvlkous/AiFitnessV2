@@ -45,7 +45,7 @@ export default function RegisterForm({
       const userExists = await checkIfUserExists(lowEmail, authHeader);
       if (!userExists) {
         dispatch(firstStepRedux(lowEmail, password));
-        navigation.navigate("Register", { title: "dsds" });
+        navigation.navigate("Register");
       } else {
         Alert.alert("Email is already in use");
       }

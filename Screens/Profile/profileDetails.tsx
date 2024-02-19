@@ -33,9 +33,6 @@ export default function ProfileDetails({
   route,
 }: NativeStackScreenProps<ProfileStackType>) {
   const insets = useSafeAreaInsets();
-  const state = useSelector(
-    (state: RootState) => state.counterReducer.currentUser
-  );
   const [diet, setDiet] = useState<string>("");
   const [height, setHeight] = useState<number>(0);
   const [weight, setWeight] = useState<number>(0);
@@ -43,7 +40,12 @@ export default function ProfileDetails({
   const [aim, setAim] = useState<string>("");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const state = useSelector(
+    (state: RootState) => state.counterReducer.currentUser
+  );
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (state != undefined) {
       setDiet(state.data.diet);

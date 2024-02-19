@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
   StyleSheet,
   Dimensions,
   Keyboard,
-  TouchableWithoutFeedback,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Animated, {
   useSharedValue,
@@ -16,19 +16,18 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { Button as PaperButton } from "react-native-paper";
-import Button from "../../components/ButtonDark";
-import { savePantryRecepie } from "../../Server/recepies";
+import Button from "../ButtonDark";
+import { savePantryRecepie } from "../../Server/pantry";
+import ButtonLoading from "../ButtonDarkLoading";
 
 const heightDim = Dimensions.get("screen").height;
 const widthDim = Dimensions.get("screen").width;
 
 export default function ModalPantry({
-  heightVal,
   closeModal,
   visible,
   modalData,
 }: {
-  heightVal: number;
   closeModal: () => void;
   visible: boolean;
   modalData:
@@ -39,6 +38,8 @@ export default function ModalPantry({
       }
     | undefined;
 }) {
+  const [loading, setLoading] = useState(false);
+  const [save, setSave] = useState(false);
   const slideUpOpacity = useSharedValue(0);
   const slideUpBg = useSharedValue(0);
   const slideUp = useSharedValue(530);
@@ -68,8 +69,15 @@ export default function ModalPantry({
     };
   });
 
-  const onSaveRecepie = () => {
-    if (modalData != undefined) savePantryRecepie(modalData);
+  const onSaveRecepie = async () => {
+    setLoading(true);
+    try {
+      if (modalData != undefined) await savePantryRecepie(modalData);
+      setSave(true);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -78,16 +86,19 @@ export default function ModalPantry({
     slideUp.value = 50;
   }, [visible]);
 
-  const height = heightVal < 3 ? { height: heightDim } : { height: "100%" };
   if (modalData == undefined) return <Text>Loading</Text>;
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={{ height: "120%", position: "absolute" }}>
-        <Animated.View style={[styles.ModalContainer, style, height]} />
-        <Animated.View style={[styles.WhiteContainer, stylee]}>
+    <View style={{ height: "120%", position: "absolute" }}>
+      <Animated.View style={[styles.ModalContainer, style]} />
+      <Animated.View style={[styles.WhiteContainer, stylee]}>
+        <ScrollView
+          style={{ position: "relative" }}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        >
           <TouchableOpacity
-            style={{ position: "absolute", right: 0, top: 15, zIndex: 20 }}
+            style={{ position: "absolute", right: -20, top: 0, zIndex: 20 }}
             onPress={handleClick}
           >
             <PaperButton
@@ -97,7 +108,7 @@ export default function ModalPantry({
               children={undefined}
             />
           </TouchableOpacity>
-          <View>
+          <View style={{ paddingBottom: 20 }}>
             <Text
               style={{
                 textAlign: "center",
@@ -106,7 +117,7 @@ export default function ModalPantry({
                 paddingBottom: 10,
               }}
             >
-              Generated Recepie
+              Navržený recept
             </Text>
             <Text
               style={{
@@ -138,24 +149,21 @@ export default function ModalPantry({
               {modalData.instructions}
             </Text>
           </View>
-          <View
-            style={{
-              display: "flex",
-              gap: 15,
-              justifyContent: "center",
-            }}
-          >
+          {!loading ? (
             <Button
               img={false}
-              title="Save"
+              title={!save ? "Uložit" : "Recept byl uložen"}
+              disabled={save}
               onPress={() => {
                 onSaveRecepie();
               }}
             />
-          </View>
-        </Animated.View>
-      </View>
-    </TouchableWithoutFeedback>
+          ) : (
+            <ButtonLoading />
+          )}
+        </ScrollView>
+      </Animated.View>
+    </View>
   );
 }
 
@@ -165,6 +173,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     width: widthDim,
+    height: heightDim,
   },
   WhiteContainer: {
     gap: 30,
@@ -174,5 +183,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: widthDim * 0.9,
     margin: 20,
+    height: "70%",
   },
 });
