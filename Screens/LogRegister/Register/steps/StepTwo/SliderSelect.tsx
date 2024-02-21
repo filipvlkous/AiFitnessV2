@@ -31,7 +31,7 @@ export default function SliderSelect({
       <Slider
         value={valu}
         onValueChange={(val) => setDispatch(val)}
-        style={{ width: "100%", height: "10px" }}
+        style={{ width: "100%", height: 10 }}
         minimumValue={min}
         maximumValue={max}
         minimumTrackTintColor="#76a6b1"

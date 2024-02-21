@@ -20,6 +20,8 @@ type UserData = {
   sex: string;
   subscription: boolean;
   weight: number;
+  exe: number;
+  days: number;
 };
 
 export type PantryStore =

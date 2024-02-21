@@ -36,10 +36,10 @@ const DayFitness: React.FC<{
           alt={exercise.name}
         />
         <View style={{ overflow: "hidden", flexShrink: 1, gap: 10 }}>
-          <Text style={{ fontFamily: "Inter-ExtraBold", color: "#fff" }}>
+          <Text style={{ fontFamily: "Inter-ExtraBold", color: "#1c1c1c" }}>
             {exercise.name}
           </Text>
-          <Text style={{ fontFamily: "Inter-SemiBold", color: "#fff" }}>
+          <Text style={{ fontFamily: "Inter-SemiBold", color: "#1c1c1c" }}>
             {exercise.repsRange}
           </Text>
         </View>
@@ -48,7 +48,7 @@ const DayFitness: React.FC<{
             style={{
               position: "absolute",
               bottom: 0,
-              borderColor: "#fff",
+              borderColor: "#D5E3E7",
               borderWidth: 1,
               width: "100%",
               borderRadius: 10,

@@ -27,6 +27,7 @@ import Button from "../../components/ButtonDark";
 import { updateUserDetails } from "../../Server/register";
 import ButtonLoading from "../../components/ButtonDarkLoading";
 import { fetchUser } from "../../redux/actions/testLoginUser";
+import Slider from "@react-native-community/slider";
 
 export default function ProfileDetails({
   navigation,
@@ -40,6 +41,8 @@ export default function ProfileDetails({
   const [aim, setAim] = useState<string>("");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [days, setDays] = useState(1);
+  const [exe, setExe] = useState(4);
 
   const state = useSelector(
     (state: RootState) => state.counterReducer.currentUser
@@ -53,6 +56,8 @@ export default function ProfileDetails({
       setAim(state.data.aim);
       setWeight(state.data.weight);
       setHeight(state.data.height);
+      setDays(state.data.days);
+      setExe(state.data.exe);
     }
   }, []);
   const changeFood = (food: string) => {
@@ -68,11 +73,21 @@ export default function ProfileDetails({
       height != state?.data.height ||
       weight != state.data.weight ||
       allergies != state.data.allergies ||
-      aim != state.data.aim
+      aim != state.data.aim ||
+      exe != state.data.exe ||
+      days != state.data.days
     ) {
       setLoading(true);
       try {
-        await updateUserDetails({ diet, height, weight, allergies, aim });
+        await updateUserDetails({
+          diet,
+          height,
+          weight,
+          allergies,
+          aim,
+          exe,
+          days,
+        });
         dispatch(fetchUser());
       } catch (error) {
         console.log(error);
@@ -215,7 +230,7 @@ export default function ProfileDetails({
             />
           </View>
 
-          <Text style={styles.TextStyle}>Your Goal</Text>
+          <Text style={styles.TextStyle}>Tvůj cíl?</Text>
 
           <View
             style={{
@@ -244,6 +259,50 @@ export default function ProfileDetails({
               sex={"Shodit váhu"}
             />
           </View>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: 20,
+            }}
+          >
+            <Text style={styles.TextStyle}>Kolikrát týdně chceš cvičit?</Text>
+            <Text style={[styles.TextStyle]}>{days}</Text>
+          </View>
+
+          <Slider
+            value={days}
+            onValueChange={(val) => setDays(Math.floor(val))}
+            style={{ width: "100%", height: 10 }}
+            minimumValue={1}
+            maximumValue={7}
+            minimumTrackTintColor="#76a6b1"
+            maximumTrackTintColor="#FFFF"
+          />
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: 20,
+            }}
+          >
+            <Text style={styles.TextStyle}>Na kolik cviků se cítíš?</Text>
+            <Text style={[styles.TextStyle]}>{exe}</Text>
+          </View>
+
+          <Slider
+            value={exe}
+            onValueChange={(val) => setExe(Math.floor(val))}
+            style={{ width: "100%", height: 10 }}
+            minimumValue={4}
+            maximumValue={8}
+            minimumTrackTintColor="#76a6b1"
+            maximumTrackTintColor="#FFFF"
+          />
 
           {!loading ? (
             <Button

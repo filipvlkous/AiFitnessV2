@@ -43,7 +43,9 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, number }) => {
       style={[
         animatedStyles,
         {
-          backgroundColor: "#47646A",
+          // backgroundColor: "#D5E3E7",
+          borderWidth: 3,
+          borderColor: "#D5E3E7",
           marginTop: 20,
           borderRadius: 10,
           padding: 10,
@@ -60,7 +62,11 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, number }) => {
         }}
       >
         <Text
-          style={{ fontSize: 20, fontFamily: "Inter-ExtraBold", color: "#fff" }}
+          style={{
+            fontSize: 18,
+            fontFamily: "Inter-Bold",
+            color: "#1c1c1c",
+          }}
         >
           Den {number}
         </Text>
@@ -74,7 +80,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, number }) => {
             style={{
               fontSize: 15,
               fontFamily: "Inter-Medium",
-              color: "#fff",
+              color: "#1c1c1c",
               marginBottom: 10,
             }}
           >

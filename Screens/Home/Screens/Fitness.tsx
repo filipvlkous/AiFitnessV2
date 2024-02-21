@@ -1,10 +1,10 @@
 import { View, Alert, Text } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getFitness, getSavedFitness } from "../../../Server/fitness";
 import ExerciseList from "../../../components/FItness";
-import ButtonEmptyRounded from "../../../components/ButtonEmptyRounded";
-import ButtonEmptyLoading from "../../../components/ButtonEmptyDarkLoading";
 import LottieView from "lottie-react-native";
+import Button from "../../../components/ButtonDark";
+import ButtonLoading from "../../../components/ButtonDarkLoading";
 type FitnessData = {
   gif: string;
   name: string;
@@ -20,8 +20,8 @@ interface TransformedItem {
 export default function Fitness() {
   const [dataLoading, setDataLoading] = useState(false);
   const [loading, setLoaidng] = useState(true);
-  const [showButton, setShowButton] = useState(false);
-  const [data, setData] = useState<FitnessData[][] | undefined>();
+  const [showButton, setShowButton] = useState(true);
+  const [data, setData] = useState<FitnessData[][] | undefined | false>();
 
   let fintesButtonText = dataLoading ? "Načítání" : "Vygeneruj nový plán";
   const getData = async () => {
@@ -29,6 +29,7 @@ export default function Fitness() {
     try {
       const data = await getFitness();
       setData(data);
+      // setShowButton(false);
     } catch (error) {
       console.log(error);
       Alert.alert("Chyba serveru, opakujte pozdeji");
@@ -41,6 +42,10 @@ export default function Fitness() {
     const genRandomKey = async () => {
       try {
         const data = await getSavedFitness();
+
+        if (data == false) {
+          return setData(false), setShowButton(true);
+        }
         const { transformedArray, TimeDate } = getFbData(data);
         const old = dateCalcul(TimeDate);
 
@@ -112,18 +117,18 @@ export default function Fitness() {
 
       {!dataLoading ? (
         showButton ? (
-          <ButtonEmptyRounded
+          <Button
             disabled={dataLoading}
             onPress={() => getData()}
             title={fintesButtonText}
-            style={{ borderRadius: 10 }}
+            style={{ borderRadius: 10, marginTop: 10 }}
           />
         ) : null
       ) : (
-        <ButtonEmptyLoading />
+        <ButtonLoading style={{ borderRadius: 10, marginTop: 10 }} />
       )}
       <View>
-        {data != undefined
+        {data != undefined && data != false
           ? data.map((exerciseGroup, index) => (
               <ExerciseList
                 key={index}

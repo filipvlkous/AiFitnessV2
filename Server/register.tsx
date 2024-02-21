@@ -44,6 +44,8 @@ export const createInDb = async ({
         diet: user.diet,
         allergies: user.allergies,
         aim: user.aim,
+        days: 4,
+        exe: 5,
       },
       {
         headers: {
@@ -51,7 +53,6 @@ export const createInDb = async ({
         },
       }
     );
-    console.log("ok");
   } catch (error: any) {
     Alert.alert("Chyba serveru:" + error.message);
     console.log(error.message);
@@ -64,12 +65,16 @@ export const updateUserDetails = async ({
   weight,
   allergies,
   aim,
+  exe,
+  days,
 }: {
   diet: string;
   height: number;
   weight: number;
   allergies: string[];
   aim: string;
+  exe: number;
+  days: number;
 }) => {
   try {
     const user = firebase.auth().currentUser;
@@ -77,7 +82,10 @@ export const updateUserDetails = async ({
 
     let respond = await axios.post(
       `${serverUrl}/firebase/updateUserDetails`,
-      { data: { diet, height, weight, allergies, aim }, uid: user.uid },
+      {
+        data: { diet, height, weight, allergies, aim, days, exe },
+        uid: user.uid,
+      },
       {
         headers: {
           "Content-Type": "application/json",

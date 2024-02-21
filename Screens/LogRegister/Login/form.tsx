@@ -76,7 +76,7 @@ export default function LoginForm({
               }}
               mode="outlined"
               label={"Email"}
-              textContentType="emailAddress"
+              textContentType="oneTimeCode"
               keyboardType="email-address"
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
@@ -108,7 +108,7 @@ export default function LoginForm({
               }}
               mode="outlined"
               label="Password"
-              textContentType="password"
+              textContentType="oneTimeCode"
               value={values.password}
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
